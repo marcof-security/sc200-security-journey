@@ -64,3 +64,15 @@ It aggregates logs and correlates signals from multiple security products
 to detect broader attack patterns.
 
 A SIEM is only as effective as the quality and coverage of the logs it ingests.
+
+
+
+## Example Attack Scenario
+
+An attacker sends a phishing email.
+User downloads malicious attachment.
+PowerShell spawns from Word.
+Defender for Endpoint detects suspicious behavior.
+Sentinel correlates with unusual login activity.
+Incident is escalated to SOC Tier 2.
+
