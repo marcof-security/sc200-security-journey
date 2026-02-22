@@ -1,5 +1,12 @@
 # Microsoft Security Ecosystem Overview
 
+## Overview
+The Microsoft Security Ecosystem is a collection of integrated security solutions 
+designed to protect identities, endpoints, cloud environments, and data. 
+It combines detection, prevention, investigation, and response capabilities 
+across hybrid and cloud infrastructures.
+
+
 ## Components
 - Microsoft Sentinel (SIEM)
 - Defender for Endpoint (EDR)
