@@ -1,4 +1,7 @@
-Microsoft Sentinel (SIEM & SOAR)
+#Microsoft Sentinel & Defender: Architecture Overview
+
+#Microsoft Sentinel (SIEM & SOAR)
+
 Role: The "Brain." It provides a bird's-eye view across the entire enterprise.
 
 Function: Aggregates data from multiple sources (Azure, AWS, On-prem, 3rd party) for long-term retention and complex correlation.
