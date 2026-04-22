@@ -1,13 +1,25 @@
-# Microsoft Sentinel & Defender: Architecture Overview
+# Microsoft Sentinel & Defender Security Stack
 
-## Microsoft Sentinel (SIEM & SOAR)
+## 🛠️ Arquitectura de Seguridad (SIEM + XDR)
+
+| Componente | Tipo | Función Principal | Detalle Técnico |
+| :--- | :--- | :--- | :--- |
+| **Microsoft Sentinel** | **SIEM / SOAR** | Correlación global de logs y automatización. | **Consume** telemetría mediante conectores de datos. Usa **KQL** para hunting. |
+| **Defender for Endpoint** | **EDR** | Protección avanzada de dispositivos (laptops/servidores). | Monitorea procesos, archivos y red. Detecta *Credential Dumping* y movimiento lateral. |
+| **Defender for Identity** | **ITDR** | Protección de identidades (On-prem AD). | Analiza el tráfico de controladores de dominio para detectar *Pass-the-Hash* o *Golden Ticket*. |
+| **Defender for Cloud** | **CSPM** | Postura de seguridad en la nube (Azure/AWS/GCP). | Identifica recursos mal configurados y vulnerabilidades en la infraestructura. |
 
 ---
 
-Role: The "Brain." It provides a bird's-eye view across the entire enterprise.
+## 🔍 Ejemplo de Telemetría y Threat Hunting (KQL)
 
-Function: Aggregates data from multiple sources (Azure, AWS, On-prem, 3rd party) for long-term retention and complex correlation.
+Para demostrar cómo Sentinel consume la telemetría de estos componentes, a continuación presento una consulta básica en **Kusto Query Language (KQL)** para identificar procesos sospechosos reportados por el EDR:
 
-Key Capability: Uses KQL (Kusto Query Language) for deep-dive threat hunting and Logic Apps-based Playbooks to automate incident response.
-
-Clarification: Sentinel is a consumer of data; it relies on connectors to ingest telemetry from the Defender suite.
+```kql
+// Buscar procesos sospechosos de Powershell descargando contenido
+DeviceProcessEvents
+| where FileName =~ "powershell.exe"
+| where ProcessCommandLine has_any ("Net.WebClient", "DownloadString", "IEX")
+| project TimeGenerated, DeviceName, AccountName, ProcessCommandLine
+| order by TimeGenerated desc
+| take 10
