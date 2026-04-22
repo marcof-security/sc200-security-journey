@@ -1,22 +1,22 @@
 # Microsoft Sentinel & Defender Security Stack
 
-## 🛠️ Arquitectura de Seguridad (SIEM + XDR)
+## 🛠️ Security Architecture (SIEM + XDR)
 
-| Componente | Tipo | Función Principal | Detalle Técnico |
+| Component | Category | Primary Function | Technical Detail |
 | :--- | :--- | :--- | :--- |
-| **Microsoft Sentinel** | **SIEM / SOAR** | Correlación global de logs y automatización. | **Consume** telemetría mediante conectores de datos. Usa **KQL** para hunting. |
-| **Defender for Endpoint** | **EDR** | Protección avanzada de dispositivos (laptops/servidores). | Monitorea procesos, archivos y red. Detecta *Credential Dumping* y movimiento lateral. |
-| **Defender for Identity** | **ITDR** | Protección de identidades (On-prem AD). | Analiza el tráfico de controladores de dominio para detectar *Pass-the-Hash* o *Golden Ticket*. |
-| **Defender for Cloud** | **CSPM** | Postura de seguridad en la nube (Azure/AWS/GCP). | Identifica recursos mal configurados y vulnerabilidades en la infraestructura. |
+| **Microsoft Sentinel** | **SIEM / SOAR** | Global log correlation and incident automation. | **Consumes** telemetry via data connectors. Uses **KQL** for hunting. |
+| **Defender for Endpoint** | **EDR** | Advanced protection for devices (laptops/servers). | Monitors processes, files, and network. Detects *Credential Dumping* and lateral movement. |
+| **Defender for Identity** | **ITDR** | Identity protection (On-prem AD). | Analyzes domain controller traffic to detect *Pass-the-Hash* or *Golden Ticket* attacks. |
+| **Defender for Cloud** | **CSPM** | Cloud Security Posture Management (Azure/AWS/GCP). | Identifies misconfigured resources and infrastructure vulnerabilities. |
 
 ---
 
-## 🔍 Ejemplo de Telemetría y Threat Hunting (KQL)
+## 🔍 Telemetry & Threat Hunting (KQL)
 
-Para demostrar cómo Sentinel consume la telemetría de estos componentes, a continuación presento una consulta básica en **Kusto Query Language (KQL)** para identificar procesos sospechosos reportados por el EDR:
+To demonstrate how Sentinel consumes telemetry from the Defender suite, here is a foundational **Kusto Query Language (KQL)** query used to identify suspicious PowerShell execution reported by the EDR:
 
 ```kql
-// Buscar procesos sospechosos de Powershell descargando contenido
+// Hunting for suspicious PowerShell download cradles
 DeviceProcessEvents
 | where FileName =~ "powershell.exe"
 | where ProcessCommandLine has_any ("Net.WebClient", "DownloadString", "IEX")
